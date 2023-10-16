@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useCallback } from 'react';
 import './App.css';
 import SearchBox from './SearchBox';
 import Content from './Content';
@@ -9,7 +9,7 @@ function App() {
   const [stat , setStat] = useState('No Status');
   const [bg, setBg] = useState('bgCold');
  
-  async function query(){
+  const query = useCallback(async()=>{
     if(location)
     {
       try{
@@ -27,16 +27,16 @@ function App() {
      
       }
     }
-  }
+  },[location]);
 
-  function setbg(){
+  const setbg = useCallback(() => {
     if (stat.includes("sun") || stat.toLowerCase().includes("clear")){
       setBg('bgWarm');
     }
     else{
       setBg('bgCold');
     }
-  }
+  },[stat]);
       
     
     
@@ -45,10 +45,10 @@ function App() {
 
   useEffect(() => {
     query(); 
-  }, [location]);
+  }, [query,location]);
   useEffect(() => {
     setbg(); 
-  }, [stat]);
+  }, [setbg,stat]);
  
 
 
